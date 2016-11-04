@@ -210,7 +210,7 @@ public class WordCloudGenerator {
             int occur = word.getOccurrences();
             if (occur > max)
                 max = occur;
-            else if (occur < min)
+            if (occur < min)
                 min = occur;
         }
 

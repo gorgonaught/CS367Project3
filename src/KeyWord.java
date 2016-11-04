@@ -30,16 +30,24 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	//Compares this KeyWord to the specified object
 	//returns true if the argument is !=null and is a KeyWord object
 	// whose word is the same as the word of this KeyWord (ignore case)
-	public boolean equals(java.lang.Object other) {
-		return true;
+	public boolean equals(Object other) {
+		if (other == null) {
+			return false;
+		}
+		
+//		if (this.getWord() == other.getWord()) {
+//			return true
+//		}
+		return false;
 	}
 	
 	//Compares the KeyWord with the one given
 	//compare the word associated with the KeyWords (ignore case)
 	@Override
 	public int compareTo(KeyWord other) {
-		// TODO Auto-generated method stub
-		return 0;
+		String word = this.getWord();
+		String otherWord = other.getWord();
+		return word.compareTo(otherWord);
 	}
 	
 	//returns the number of occurrences of a given KeyWord
@@ -51,5 +59,9 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	public void increment() {
 		this.occurrence += 1;
 	}
-
+	
+	//returns the word associated with the KeyWord object
+	public String getWord() {
+		return word;
+	}
 }

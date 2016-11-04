@@ -6,7 +6,9 @@ import java.util.*;
  * order of the key values (from smallest to largest).
  */
 public class BSTDictionaryIterator<K> implements Iterator<K> {
-
+	
+	Stack<K> dictStack = new Stack<K>();
+	
     // TO DO:
     //
     // Add your code to implement the BSTDictionaryIterator.  To receive full
@@ -19,13 +21,29 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
     // to next() returns the value in the node with the smallest key.
     // (You can use the Java API Stack or implement your own Stack - if you
     // implement your own, make sure to hand it in.)
+	
+	//constructor
+	public BSTDictionaryIterator(BSTDictionary<K> dictionary) {
+		//push root
+		//push each left node
+	}
 
+	/**
+	 * Returns whether or not the stack is empty
+	 * @return true if there is an item in the stack; else false.
+	 */
     public boolean hasNext() {
-        return false;  // replace this stub with your code
+        return dictStack.empty();
     }
 
+    /**
+	 * Returns the data value for the next node in the tree/stack.
+	 * @return the data held in the next node.
+	 */
     public K next() {
-        return null;  // replace this stub with your code
+    	K next = dictStack.pop();
+    	//if node has right children, push each of them
+        return next;
     }
 
     public void remove() {
