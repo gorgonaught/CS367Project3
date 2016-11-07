@@ -42,7 +42,6 @@ public class WordCloudGenerator {
         
         // 2. Check whether input and ignore files (given as command-line arguments) exist and are readable;
         // if not, display "Error: cannot access file fileName" where fileName is the name of the appropriate file and then quit.
-
 		String inputFileName = args[0];
 		File inputFile = new File(inputFileName);
 		if (!inputFile.exists() || !inputFile.canRead())
@@ -82,7 +81,7 @@ public class WordCloudGenerator {
 				for (String word : words) {
 
 					try {
-						ignoreDict.insert(word);
+						ignoreDict.insert(word.toLowerCase());
 					}
 					catch (DuplicateException e){
 						// ignore duplicate words in ignore file
@@ -116,7 +115,7 @@ public class WordCloudGenerator {
 					// create keyword for word to add
 					
 					// make sure this keyword isn't in the ignore list
-					if (!ignoreDict.lookup(word).equals(null)) {
+					if (!ignoreDict.lookup(word.toLowerCase()).equals(null)) {
 						if (debug) {
 							System.out.println("Ignored word: " + word);
 						}
@@ -124,7 +123,7 @@ public class WordCloudGenerator {
 						}
 					
 					try {
-							dictionary.insert(new KeyWord(word));
+							dictionary.insert(new KeyWord(word.toLowerCase()));
 							if (debug) {
 								System.out.println("Added word to in: " + word);
 							}

@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class BSTDictionaryIterator<K> implements Iterator<K> {
 	
-	Stack<K> dictStack = new Stack<K>();
+	Stack<K> dictStack;
 	
     // TO DO:
     //
@@ -23,9 +23,13 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
     // implement your own, make sure to hand it in.)
 	
 	//constructor
-	public BSTDictionaryIterator(BSTDictionary<?> dictionary) {
-		//push root
-		//push each left node
+	public BSTDictionaryIterator(BSTnode<K> root) {
+		dictStack = new Stack(BSTnode<K>());
+		//push root, then push each left node
+		while (root != null) {
+			dictStack.push(root);
+			root = root.getLeft();
+		}
 	}
 
 	/**
@@ -33,7 +37,7 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
 	 * @return true if there is an item in the stack; else false.
 	 */
     public boolean hasNext() {
-        return dictStack.empty();
+        return !dictStack.empty();
     }
 
     /**
@@ -41,8 +45,16 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
 	 * @return the data held in the next node.
 	 */
     public K next() {
-    	K next = dictStack.pop();
+    	BSTnode<K> next = dictStack.pop();
+    	BSTnode<K> node = next;
     	//if node has right children, push each of them
+    	if (node.getRight() != null) {
+    		node = node.getRight();
+    		while (node != null) {
+    			dictStack.push(node);
+    			node = node.getRight();
+    		}
+    	}
         return next;
     }
 

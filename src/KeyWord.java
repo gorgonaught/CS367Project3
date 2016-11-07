@@ -30,14 +30,14 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	//Compares this KeyWord to the specified object
 	//returns true if the argument is !=null and is a KeyWord object
 	// whose word is the same as the word of this KeyWord (ignore case)
-	public boolean equals(Object other) {
+	public boolean equals(KeyWord other) {
 		if (other == null) {
 			return false;
 		}
 		
-//		if (this.getWord() == other.getWord()) {
-//			return true
-//		}
+		if (this.getWord() == other.getWord()) {
+			return true;
+		}
 		return false;
 	}
 	
@@ -47,6 +47,7 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	public int compareTo(KeyWord other) {
 		String word = this.getWord();
 		String otherWord = other.getWord();
+		//convert KeyWords to strings and compare them using the built in method
 		return word.compareTo(otherWord);
 	}
 	
