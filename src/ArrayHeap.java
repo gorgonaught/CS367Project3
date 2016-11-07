@@ -44,7 +44,7 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     	}
     	
     	E[] arrayHeap = (E[])(new Prioritizable[initSize]);
-    	size = 0;
+    	size = 0;//
     }
 
     //returns true if the PQ contains no items
