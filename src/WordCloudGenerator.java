@@ -33,67 +33,172 @@ public class WordCloudGenerator {
      * </ul>
      */
     public static void main(String[] args) {
-        Scanner in = null;         // for input from text file
-        PrintStream out = null;    // for output to html file
-        Scanner inIgnore = null;   // for input from ignore file
-        DictionaryADT<KeyWord> dictionary = new BSTDictionary<KeyWord>();  
+    	boolean debug = false;
 
         // Check the command-line arguments and set up the input and output
+        // 1. Check whether there are exactly four command-line arguments;
+        // if not, display "Four arguments required: inputFileName outputFileName ignoreFileName maxWords" and quit.
+        if ( args.length != 4 ) {	System.out.println("Four arguments required: inputFileName outputFileName ignoreFileName maxWords"); return; }
         
-        /////////////////////
-        // ADD YOUR CODE HERE
-        ///////////////////// 
+        // 2. Check whether input and ignore files (given as command-line arguments) exist and are readable;
+        // if not, display "Error: cannot access file fileName" where fileName is the name of the appropriate file and then quit.
 
-        // Create the dictionary of words to ignore
-        // You do not need to change this code.
-        DictionaryADT<String> ignore = new BSTDictionary<String>();
-        while (inIgnore.hasNext()) {
-            try {
-                ignore.insert(inIgnore.next().toLowerCase());
-            } catch (DuplicateException e) {
-                // if there is a duplicate, we'll just ignore it
-            }
+		String inputFileName = args[0];
+		File inputFile = new File(inputFileName);
+		if (!inputFile.exists() || !inputFile.canRead())
+		{
+			System.out.println("Error: cannot access file " + inputFileName);
+			return;
+		}
+		
+		// grab output file name for later
+		String outputFileName = args[1];
+		
+		String ignoreFileName = args[2];
+		File ignoreFile = new File(ignoreFileName);
+		if (!ignoreFile.exists() || !ignoreFile.canRead())
+		{
+			System.out.println("Error: cannot access file " + ignoreFileName);
+			return;
+		}
+		
+		// 3. Check whether the maxWords command-line argument is a positive integer; if not, display "Error: maxWords must be a positive integer" and quit.
+		int maxWords = 0;
+		try{
+			Integer.parseInt(args[3]);
+		}
+		catch (NumberFormatException NFex){
+			System.out.println("Error: maxWords must be a positive integer");
+		}
+		
+		// 4. Read in the ignore file and create a dictionary of words to ignore.
+		Scanner inIgnore = null;   // for input from ignore file 
+		BSTDictionary<String> ignoreDict = new BSTDictionary<String>();
+		try {
+			inIgnore = new Scanner(ignoreFile);
+			while (inIgnore.hasNextLine())
+			{
+				List<String> words = parseLine(inIgnore.nextLine());
+				for (String word : words) {
+
+					try {
+						ignoreDict.insert(word);
+					}
+					catch (DuplicateException e){
+						// ignore duplicate words in ignore file
+						if (debug) {
+							e.printStackTrace(System.out);
+						}
+					}
+				}
+			}
+		}
+		catch (FileNotFoundException FNFex)
+		{
+			if (debug)
+			{
+				FNFex.printStackTrace();
+			}
+			System.out.println("problem with ignore file");
+			return;
+		}
+		inIgnore.close();
+
+        // 5. Read in the input text file and create a dictionary of key words for it (leaving out any words listed in the ignore dictionary).
+        Scanner in = null;         // for input from text file
+		BSTDictionary<KeyWord> dictionary = new BSTDictionary<KeyWord>(); 
+		try {
+			in = new Scanner(inputFile);
+			while (in.hasNextLine())
+			{
+				List<String> words = parseLine(in.nextLine());
+				for (String word : words){
+					// create keyword for word to add
+					
+					// make sure this keyword isn't in the ignore list
+					if (!ignoreDict.lookup(word).equals(null)) {
+						if (debug) {
+							System.out.println("Ignored word: " + word);
+						}
+						continue;
+						}
+					
+					try {
+							dictionary.insert(new KeyWord(word));
+							if (debug) {
+								System.out.println("Added word to in: " + word);
+							}
+						}
+					catch (DuplicateException e){
+						// ignore duplicate words in ignore file
+						if (debug) { System.out.println("Duplicate key in: " + word);}
+					}
+				}
+			}
+		}
+		catch (FileNotFoundException FNFex)
+		{
+			if (debug)
+			{
+				FNFex.printStackTrace();
+			}
+			System.out.println("problem with ignore file");
+		}
+		in.close();
+
+        /* 6. Print out information about the dictionary of key words in the following format:
+		# keys: keys
+		avg path length: average
+		linear avg path: linear
+
+		where keys is the number of keys in the dictionary,
+		average is the average path length, i.e., (total path length)/(# keys),
+		and linear is the average path length if the underlying data structure is linear (like a chain of linked nodes), i.e., (1 + # keys)/2 
+		*/
+		long keys = dictionary.size();
+		long totalPathLength = dictionary.totalPathLength();
+		
+		System.out.println("# keys: " + Long.toString(keys));
+		if (keys == 0){
+			System.out.println("avg path length: N/A");
+			}
+		else { 
+			System.out.println("avg path length: " + Long.toString(totalPathLength/keys));
+			}
+		System.out.println("linear avg path: " + Long.toString( (1 + keys)/2 ));
+		
+		// order key words in priority queue 
+        BSTDictionaryIterator<KeyWord> dictIter = (BSTDictionaryIterator<KeyWord>) dictionary.iterator();
+        ArrayHeap<KeyWord> cloudQueue = new ArrayHeap<KeyWord>();
+        while (dictIter.hasNext()){
+        	cloudQueue.insert(dictIter.next());
         }
         
-        // Process the input file line by line
-        // Note: the code below just prints out the words contained in each
-        // line.  You will need to replace that code with code to generate
-        // the dictionary of KeyWords.
-        while (in.hasNext()) {
-            String line = in.nextLine();
-            List<String> words = parseLine(line);
-
-            ////////////////////////////////////////
-            // REPLACE THE CODE BELOW WITH YOUR CODE
-            for (String word : words)
-                out.print(word + " | ");
-            out.println();
-            ////////////////////////////////////////
-
-        } // end while
-
+        // get top maxWords words from queue
+        DictionaryADT<KeyWord> outputDict = new BSTDictionary<KeyWord>();
+        int i = 0;
+        while (i <= maxWords){
+        	i++;
+        	try {
+				outputDict.insert( cloudQueue.removeMax() );
+			}
+        	catch (DuplicateException e) {
+				if (debug) { e.printStackTrace(); }
+			}
+        }
         
-        ////////////////////////////////////////////////////////////
-        // ADD YOUR CODE HERE TO
-        // - Print out the information about the dictionary:
-        //     - # of keys
-        //     - average path length
-        //     - linear average path length
-        // - Put the dictionary into a priority queue
-        // - Use the priority queue to create a list of KeyWords of 
-        //   the appropriate length
-        // - Generate the html output file
-        ////////////////////////////////////////////////////////////
-        
-
-        // Close everything
-        if (in != null) 
-            in.close();
-        if (inIgnore != null) 
-            inIgnore.close();
-        if (out != null) 
-            out.close();
+        // create output html file based on top words
+        File outFile = new File(outputFileName);
+        PrintStream out = null;
+        try {
+			out = new PrintStream(outFile);
+			generateHtml(outputDict, out);
+		} catch (FileNotFoundException e) {
+			if (debug) { e.printStackTrace(); }
+		}
+        out.close();
     }
+
     
     /**
      * Parses the given line into an array of words.
@@ -157,32 +262,31 @@ public class WordCloudGenerator {
      * 
      * DO NOT CHANGE THIS METHOD
      */
-    private static void generateHtml(DictionaryADT<KeyWord> words, 
-                                     PrintStream out) {
-           String[] colors = { 
-         	"#CD5C5C",      //INDIANRED
-		"#5F9EA0",      //CADETBLUE
-	 	"#FA8072",      //SALMON
-	 	"#E9967A",      //DARKSALMON
-	 	"#FF69B4",      //HOTPINK
-	 	"#FFA500",      //ORANGE
-		"#B22222",	// FIREBRICK
-	 	"#E6E6FA",      //LAVENDER
-	 	"#8A2BE2",      //BLUEVIOLET
-	 	"#6A5ACD",      //SLATEBLUE
-	 	"#7FFF00",      //CHARTREUSE
-	 	"#32CD32",      //LIMEGREEN
-	 	"#228B22",      //FORESTGREEN
-	 	"#66CDAA",      //MEDIUMAQUAMARINE
-	 	"#00FFFF",      //CYAN
-	 	"#1E90FF",      //DODGERBLUE
-	 	"#FFE4C4",      //BISQUE
-	 	"#8B4513",      //SADDLEBROWN
-	 	"#F5F5DC",      //BEIGE
-	 	"#C0C0C0"       //Silver       
-	     };
-           int initFontSize = 100;
-   	   String fontFamily = "Cursive";
+    private static void generateHtml(DictionaryADT<KeyWord> words, PrintStream out) {
+    	String[] colors = { 
+    			"#CD5C5C",      //INDIANRED
+				"#5F9EA0",      //CADETBLUE
+			 	"#FA8072",      //SALMON
+			 	"#E9967A",      //DARKSALMON
+			 	"#FF69B4",      //HOTPINK
+			 	"#FFA500",      //ORANGE
+				"#B22222",		// FIREBRICK
+			 	"#E6E6FA",      //LAVENDER
+			 	"#8A2BE2",      //BLUEVIOLET
+			 	"#6A5ACD",      //SLATEBLUE
+			 	"#7FFF00",      //CHARTREUSE
+			 	"#32CD32",      //LIMEGREEN
+			 	"#228B22",      //FORESTGREEN
+			 	"#66CDAA",      //MEDIUMAQUAMARINE
+			 	"#00FFFF",      //CYAN
+			 	"#1E90FF",      //DODGERBLUE
+			 	"#FFE4C4",      //BISQUE
+			 	"#8B4513",      //SADDLEBROWN
+			 	"#F5F5DC",      //BEIGE
+			 	"#C0C0C0"       //Silver       
+	    };
+    	int initFontSize = 100;
+    	String fontFamily = "Cursive";
            
         // Print the header information including the styles
         out.println("<head>\n<title>Word Cloud</title>");

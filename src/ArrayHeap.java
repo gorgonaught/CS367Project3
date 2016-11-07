@@ -30,7 +30,7 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     
     
     //create a new array heap using the default size
-    public ArrayHeap<E> {
+    public ArrayHeap() {
     	//create a heap where array has size of INIT_SIZE + 1 to account for unused pos[0]
     	E[] arrayHeap = (E[])(new Prioritizable[INIT_SIZE + 1]);
     	size = 0;
@@ -38,7 +38,7 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     
     //create a new array heap of the given size
     //throws IllegalArgumentException if the size is less than 0
-    public ArrayHeap<E>(int initSize) {
+    public ArrayHeap(int initSize) {
     	if (initSize < 0){
     		throw new IllegalArgumentException();
     	}
@@ -55,9 +55,7 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     //adds given item to the PQ
     public void insert(E item) {
     	//should ignore position 0 and start adding at pos[1]
-    	if (arrayHeap.size() >= length - 1) {
-    		arrayHeap = this.resize();
-    	}
+
     	//increment the size variable and add to correct node
         // add your code
     }

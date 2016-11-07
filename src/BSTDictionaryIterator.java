@@ -23,7 +23,7 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
     // implement your own, make sure to hand it in.)
 	
 	//constructor
-	public BSTDictionaryIterator(BSTDictionary<K> dictionary) {
+	public BSTDictionaryIterator(BSTDictionary<?> dictionary) {
 		//push root
 		//push each left node
 	}
