@@ -233,7 +233,6 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
 
 	//return new iterator over the dictionary that iterates over the keys using in-order traversal
     public Iterator<K> iterator() {
-    	BSTDictionaryIterator<K> BSTiter = new BSTDictionaryIterator<K>(root);
-        return BSTiter;
+    	return new BSTDictionaryIterator<K>(root);
     }
 }

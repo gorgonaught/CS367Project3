@@ -22,8 +22,8 @@ import java.util.*;
  */
 public class BSTDictionaryIterator<K> implements Iterator<K> {
 	
-	Stack<BSTnode<K>> dictStack;
-	BSTnode<K> curr;
+	private Stack<BSTnode<K>> dictStack;
+	private BSTnode<K> curr;
 	
     // TO DO:
     //
@@ -39,6 +39,13 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
     // implement your own, make sure to hand it in.)
 	
 	//constructor
+	/**
+	 * Create a new BSTDictionary iterator starting at the given root node
+	 * When the iterator is created, the root is pushed along with all of
+	 * the root's left children
+	 * 
+	 * @param root The root of the tree to iterate over
+	 */
 	public BSTDictionaryIterator(BSTnode<K> root) {
 		dictStack = new Stack<BSTnode<K>>();
 		if (root == null) { return; }
@@ -47,6 +54,9 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
 		StackItUp( );
 	}
 	
+	/**
+	 * Pushes all of a nodes left children
+	 */
 	private void StackItUp(){
 		while ( curr != null ) {
 			dictStack.push( curr );

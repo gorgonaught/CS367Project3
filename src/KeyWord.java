@@ -23,7 +23,11 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	private int occurrence;
 	
 	//constructor
-	//Creates a new KeyWord with a default number of occurrences of 0
+	/**Creates a new KeyWord with a default number of occurrences of 0
+	 * 
+	 * @param word word to associate with this KeyWord
+	 * @throws IllegalArgumentException - if word is null
+	 */
 	public KeyWord(String word) throws IllegalArgumentException {
 		if (word == null) {
 			throw new IllegalArgumentException();
@@ -36,28 +40,35 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	}
 	
 	//methods
-	//returns the priority for a given KeyWord
+	/**returns the priority for a given KeyWord
+	 * 
+	 * @return the priority for a keyword
+	 */
 	@Override
 	public int getPriority() {
 		return occurrence;
 	}
 	
-	//Compares this KeyWord to the specified object
-	//returns true if the argument is !=null and is a KeyWord object
-	// whose word is the same as the word of this KeyWord (ignore case)
-	public boolean equals(KeyWord other) {
-		if (other == null) {
+	/**
+	 * compares this Keyword with the given object. If the object is a KeyWord
+	 * and the KeyWord's word is the same as this word, then return true. Case-insensitive
+	 * 
+	 * @param other object with which to compare this Keyword
+	 * @return True if other's word is the same as this word, else false
+	 */
+	public boolean equals(Object other) {
+		if (other == null || !(other instanceof KeyWord)) {
 			return false;
 		}
 		
-		if (this.getWord() == other.getWord()) {
-			return true;
-		}
-		return false;
+		KeyWord otherWord = (KeyWord) other;
+		return word.equalsIgnoreCase(otherWord.getWord());
 	}
 	
-	//Compares the KeyWord with the one given
-	//compare the word associated with the KeyWords (ignore case)
+	/**Compares the KeyWord with the one given (case insensitive)
+	 * 
+	 * @param other - KeyWord to compare to
+	 */
 	@Override
 	public int compareTo(KeyWord other) {
 		String word = this.getWord();
@@ -66,7 +77,10 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 		return word.compareTo(otherWord);
 	}
 	
-	//returns the number of occurrences of a given KeyWord
+	/**returns the number of occurrences of a given KeyWord
+	 * 
+	 * @return number of occurrences of a given keyword
+	 */
 	public int getOccurrences() {
 		return occurrence;
 	}
@@ -76,7 +90,10 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 		this.occurrence += 1;
 	}
 	
-	//returns the word associated with the KeyWord object
+	/**returns the word associated with the KeyWord object
+	 * 
+	 * @return word associated with the KeyWord
+	 */
 	public String getWord() {
 		return word;
 	}

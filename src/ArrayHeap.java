@@ -82,7 +82,13 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
         return arrayHeap[1];
     }
     
-    //removes and returns the item with the highest priority
+    /**removes and returns the item with the highest priority
+     * It is replaced with the last value in the array which is
+     * then incrementally moved to keep the heap ordered
+     * 
+     * @return item with the highest priority
+     * @throws NoSuchElementException if the queue is empty
+     */
 	public E removeMax() {
 		if ( n < 1 ) { throw new NoSuchElementException(); }
 		// save value to return
@@ -121,6 +127,12 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 		return returnVal;  // return position 1
     }
 	
+	/**
+	 * Checks if the array is ordered for a given position
+	 * 
+	 * @param pos position in the array to check
+	 * @return
+	 */
 	private boolean IsOrdered ( int pos ) {
 		int lcPos = 2 * pos;
 		int rcPos = 2 * pos + 1;
