@@ -33,7 +33,7 @@ public class WordCloudGenerator {
      * </ul>
      */
     public static void main(String[] args) {
-    	boolean debug = false;
+    	boolean debug = true;
 
         // Check the command-line arguments and set up the input and output
         // 1. Check whether there are exactly four command-line arguments;
@@ -115,15 +115,16 @@ public class WordCloudGenerator {
 					// create keyword for word to add
 					
 					// make sure this keyword isn't in the ignore list
-					if (!ignoreDict.lookup(word.toLowerCase()).equals(null)) {
+					if (ignoreDict.lookup(word.toLowerCase()) != null) {  //(!ignoreDict.lookup(word.toLC()).equals(null))
 						if (debug) {
 							System.out.println("Ignored word: " + word);
 						}
 						continue;
 						}
 					
+					KeyWord newKey = new KeyWord(word.toLowerCase());
 					try {
-							dictionary.insert(new KeyWord(word.toLowerCase()));
+							dictionary.insert(newKey);
 							if (debug) {
 								System.out.println("Added word to in: " + word);
 							}
@@ -131,6 +132,7 @@ public class WordCloudGenerator {
 					catch (DuplicateException e){
 						// ignore duplicate words in ignore file
 						if (debug) { System.out.println("Duplicate key in: " + word);}
+						newKey.increment();
 					}
 				}
 			}

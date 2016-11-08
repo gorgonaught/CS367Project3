@@ -1,5 +1,20 @@
 import java.util.*;
 
+///////////////////////////////////////////////////////////////////////////////
+//
+//Main Class File:  WordCloudGenerator
+//File:             KeyWord
+//Semester:         CS367 Fall 2016
+//
+//Author1:          Justin High (jshigh@wisc.edu)
+//CS Login:         high
+//Author2:			Aaron Gordner (agordner@wisc.edu)
+//CS Login:		 	gordner
+//Lecturer's Name:  Charles Fischer
+//Lab Section:      004
+//
+///////////////////////////////////////////////////////////////////////////////
+
 //each KeyWord object contains a word and a non-negative integer representing
 //the number of times the word occurs in the input file
 public class KeyWord implements Comparable<KeyWord>, Prioritizable {

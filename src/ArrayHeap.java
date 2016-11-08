@@ -1,17 +1,27 @@
 import java.util.NoSuchElementException;
 
+///////////////////////////////////////////////////////////////////////////////
+//
+//Main Class File:  WordCloudGenerator
+//File:             ArrayHeap
+//Semester:         CS367 Fall 2016
+//
+//Author1:          Justin High (jshigh@wisc.edu)
+//CS Login:         high
+//Author2:			 Aaron Gordner (agordner@wisc.edu)
+//CS Login:		 gordner
+//Lecturer's Name:  Charles Fischer
+//Lab Section:      004
+//
+///////////////////////////////////////////////////////////////////////////////
+
 public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     // default number of items the heap can hold before expanding
     private static final int INIT_SIZE = 100; // default initial size of a heap
     private int n = 0; // number of entries in heap
-    E[] arrayHeap = null; // default empty array
+    private E[] arrayHeap = null; // default empty array
 
-    // TODO:
     // Add your code to implement the PriorityQueue ADT operations using a heap whose underlying data structure is an array.
-    //=================================================
-    //TODO: remove this - found a helpful sample program here http://people.cs.vt.edu/shaffer/Book/JAVA/progs/MaxHeap/MaxHeap.java
-    //TODO: more examples - http://www.cs.bu.edu/~snyder/cs112/CodeExamples/MaxHeap.java, http://courses.cs.washington.edu/courses/cse373/11wi/homework/5/BinaryHeap.java <- min-heap instead of max
-    //=================================================
 
     //create a new array heap using the default size
     public ArrayHeap() {
@@ -43,7 +53,8 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     	n += 1;
     	if ( n > arrayHeap.length + 1 ) { 
     		this.resize(); 
-    		}
+    	}
+    	
     	arrayHeap[n] = item;
     	int currPos = n;
     	while ( !IsOrdered( parent(currPos )) ) {
