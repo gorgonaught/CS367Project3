@@ -23,7 +23,7 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	private int occurrence;
 	
 	//constructor
-	/**Creates a new KeyWord with a default number of occurrences of 0
+	/**Creates a new KeyWord with a default number of occurrences of 1
 	 * 
 	 * @param word word to associate with this KeyWord
 	 * @throws IllegalArgumentException - if word is null
@@ -35,7 +35,7 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 		
 		else{
 			this.word = word.toLowerCase();
-			this.occurrence = 0;
+			this.occurrence = 1;
 		}
 	}
 	

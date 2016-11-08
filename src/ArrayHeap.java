@@ -58,10 +58,16 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     	arrayHeap[n] = item;
     	int currPos = n;
     	while ( !IsOrdered( parent(currPos )) ) {
+    		// save current value
     		E currVal = arrayHeap[currPos];
-    		if ( arrayHeap[currPos].getPriority() > arrayHeap[parent( currPos )].getPriority() ) {
+    		int currPrior = arrayHeap[currPos].getPriority();
+    		int parentPrior = arrayHeap[parent( currPos )].getPriority();
+    		if ( currPrior > parentPrior  ) {
     			arrayHeap[currPos] = arrayHeap[parent( currPos )];
     			arrayHeap[parent( currPos )] = currVal;
+    			currPos = parent( currPos );
+    		}
+    		if ( currPrior == parentPrior ) { 
     			currPos = parent( currPos );
     		}
     	}
@@ -134,6 +140,7 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 	 * @return
 	 */
 	private boolean IsOrdered ( int pos ) {
+		if ( pos < 1 ) { return true; }
 		int lcPos = 2 * pos;
 		int rcPos = 2 * pos + 1;
 		
@@ -144,7 +151,10 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 		if ( rcPos > n ) { return arrayHeap[pos].getPriority() > arrayHeap[lcPos].getPriority(); }
 		
 		// both children
-		return ( arrayHeap[pos].getPriority() > arrayHeap[lcPos].getPriority() && arrayHeap[pos].getPriority() > arrayHeap[rcPos].getPriority() );
+		int posPrior = arrayHeap[pos].getPriority();
+		int lcPrior = arrayHeap[lcPos].getPriority();
+		int rcPrior = arrayHeap[rcPos].getPriority();
+		return ( posPrior >= lcPrior && posPrior >= rcPrior );
 	}
 	
 	private int PrioritizedPosition ( int lPos, int rPos ) {

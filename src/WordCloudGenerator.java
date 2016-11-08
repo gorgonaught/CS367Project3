@@ -82,11 +82,12 @@ public class WordCloudGenerator {
 
 					try {
 						ignoreDict.insert(word.toLowerCase());
+						if ( debug ) { System.out.println("Adding ignored word: " + word); }
 					}
 					catch (DuplicateException e){
 						// ignore duplicate words in ignore file
 						if (debug) {
-							e.printStackTrace(System.out);
+							System.out.println("Ignored duplicate ignored word: " + word);
 						}
 					}
 				}
@@ -113,6 +114,8 @@ public class WordCloudGenerator {
 				List<String> words = parseLine(in.nextLine());
 				for (String word : words){
 					// create keyword for word to add
+					word = word.toLowerCase();
+					KeyWord newKey = new KeyWord( word );
 					
 					// make sure this keyword isn't in the ignore list
 					if (ignoreDict.lookup(word.toLowerCase()) != null) {  //(!ignoreDict.lookup(word.toLC()).equals(null))
@@ -122,17 +125,24 @@ public class WordCloudGenerator {
 						continue;
 						}
 					
-					KeyWord newKey = new KeyWord(word.toLowerCase());
-					try {
-							dictionary.insert(newKey);
-							if (debug) {
-								System.out.println("Added word to in: " + word);
+					KeyWord existingKey = dictionary.lookup(newKey);
+					if ( existingKey != null ) {
+						existingKey.increment();
+						if ( debug ) { System.out.println("Incremented dictionary word: " + word); }
+					}
+					else {
+						try {
+								dictionary.insert(newKey);
+								if (debug) {
+									System.out.println("Added word to dictionary: " + word);
+								}
 							}
+						// shouldn't be a dup since we just did lookup, but...
+						catch (DuplicateException e){
+							// ignore duplicate words in ignore file
+							if (debug) { System.out.println("Duplicate key in dictionary: " + word);}
+							newKey.increment();
 						}
-					catch (DuplicateException e){
-						// ignore duplicate words in ignore file
-						if (debug) { System.out.println("Duplicate key in: " + word);}
-						newKey.increment();
 					}
 				}
 			}
@@ -156,17 +166,17 @@ public class WordCloudGenerator {
 		average is the average path length, i.e., (total path length)/(# keys),
 		and linear is the average path length if the underlying data structure is linear (like a chain of linked nodes), i.e., (1 + # keys)/2 
 		*/
-		long keys = dictionary.size();
-		long totalPathLength = dictionary.totalPathLength();
+		float keys = dictionary.size();
+		float totalPathLength = dictionary.totalPathLength();
 		
-		System.out.println("# keys: " + Long.toString(keys));
+		System.out.println("# keys: " + Float.toString((int)keys));
 		if (keys == 0){
 			System.out.println("avg path length: N/A");
 			}
 		else { 
-			System.out.println("avg path length: " + Long.toString(totalPathLength/keys));
+			System.out.println("avg path length: " + Float.toString(totalPathLength/keys));
 			}
-		System.out.println("linear avg path: " + Long.toString( (1 + keys)/2 ));
+		System.out.println("linear avg path: " + Float.toString( (1 + keys)/2 ));
 		
 		// order key words in priority queue 
         BSTDictionaryIterator<KeyWord> dictIter = (BSTDictionaryIterator<KeyWord>) dictionary.iterator();
