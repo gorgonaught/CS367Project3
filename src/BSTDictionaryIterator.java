@@ -7,7 +7,8 @@ import java.util.*;
  */
 public class BSTDictionaryIterator<K> implements Iterator<K> {
 	
-	Stack<K> dictStack;
+	Stack<BSTnode<K>> dictStack;
+	BSTnode<K> curr;
 	
     // TO DO:
     //
@@ -24,11 +25,17 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
 	
 	//constructor
 	public BSTDictionaryIterator(BSTnode<K> root) {
-		dictStack = new Stack(BSTnode<K>());
-		//push root, then push each left node
-		while (root != null) {
-			dictStack.push(root);
-			root = root.getLeft();
+		dictStack = new Stack<BSTnode<K>>();
+		if (root == null) { return; }
+		curr = root;
+		// find smallest non-leaf node in left tree
+		StackItUp( );
+	}
+	
+	private void StackItUp(){
+		while ( curr != null ) {
+			dictStack.push( curr );
+			curr = curr.getLeft();
 		}
 	}
 
@@ -45,17 +52,17 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
 	 * @return the data held in the next node.
 	 */
     public K next() {
-    	BSTnode<K> next = dictStack.pop();
-    	BSTnode<K> node = next;
-    	//if node has right children, push each of them
-    	if (node.getRight() != null) {
-    		node = node.getRight();
-    		while (node != null) {
-    			dictStack.push(node);
-    			node = node.getRight();
-    		}
+    	// exception if already empty
+    	if ( !this.hasNext() ) { throw  new NoSuchElementException(); }
+
+    	K retKey = null;
+    	if ( curr == null && !dictStack.isEmpty() ) {
+    		curr = dictStack.pop();
+    		retKey = curr.getKey();
+    		curr = curr.getRight();
+    		StackItUp();
     	}
-        return next;
+    	return retKey;
     }
 
     public void remove() {
