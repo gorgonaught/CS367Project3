@@ -128,13 +128,17 @@ public class WordCloudGenerator {
 					KeyWord existingKey = dictionary.lookup(newKey);
 					if ( existingKey != null ) {
 						existingKey.increment();
-						if ( debug ) { System.out.println("Incremented dictionary word: " + word); }
+						if ( debug ) { 
+							System.out.println("Incremented dictionary word: " + word + ": " + Integer.toString(existingKey.getOccurrences()) );
+							System.out.println(dictionary.toString());
+							}
 					}
 					else {
 						try {
 								dictionary.insert(newKey);
 								if (debug) {
 									System.out.println("Added word to dictionary: " + word);
+									System.out.println(dictionary.toString());
 								}
 							}
 						// shouldn't be a dup since we just did lookup, but...
@@ -156,6 +160,8 @@ public class WordCloudGenerator {
 			System.out.println("problem with ignore file");
 		}
 		in.close();
+		// print out in-order traversal of nodes
+		if ( debug ) { System.out.println(dictionary.toString()); }
 
         /* 6. Print out information about the dictionary of key words in the following format:
 		# keys: keys

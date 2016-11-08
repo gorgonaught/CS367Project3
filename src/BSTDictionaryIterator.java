@@ -55,7 +55,7 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
 	}
 	
 	/**
-	 * Pushes all of a nodes left children
+	 * Pushes all of a node's left children onto dictStack
 	 */
 	private void StackItUp(){
 		while ( curr != null ) {

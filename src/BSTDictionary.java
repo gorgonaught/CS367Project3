@@ -235,4 +235,14 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
     public Iterator<K> iterator() {
     	return new BSTDictionaryIterator<K>(root);
     }
+    
+    public String toString() {
+    	String retString = "";
+        BSTDictionaryIterator<KeyWord> myIter = (BSTDictionaryIterator<KeyWord>) this.iterator();
+
+        while (myIter.hasNext()){
+        	retString += myIter.next().toString() + " | ";
+        }
+    	return retString;
+    }
 }

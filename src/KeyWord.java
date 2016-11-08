@@ -87,7 +87,7 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	
 	//adds one to the number of occurrences for this KeyWord
 	public void increment() {
-		this.occurrence += 1;
+		occurrence += 1;
 	}
 	
 	/**returns the word associated with the KeyWord object
@@ -96,5 +96,10 @@ public class KeyWord implements Comparable<KeyWord>, Prioritizable {
 	 */
 	public String getWord() {
 		return word;
+	}
+	
+	public String toString() {
+		if ( this.word != null ) { return word + " : " + Integer.toString(occurrence); }
+		return "";
 	}
 }
