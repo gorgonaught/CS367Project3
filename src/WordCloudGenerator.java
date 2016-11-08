@@ -65,6 +65,7 @@ public class WordCloudGenerator {
 		int maxWords = 0;
 		try{
 			maxWords = Integer.parseInt(args[3]);
+			if ( maxWords < 1 ) { System.out.println("Error: maxWords must be a positive integer"); return; }
 		}
 		catch (NumberFormatException NFex){
 			System.out.println("Error: maxWords must be a positive integer");
