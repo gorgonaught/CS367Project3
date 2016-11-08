@@ -33,7 +33,7 @@ public class WordCloudGenerator {
      * </ul>
      */
     public static void main(String[] args) {
-    	boolean debug = true;
+    	boolean debug = false;
 
         // Check the command-line arguments and set up the input and output
         // 1. Check whether there are exactly four command-line arguments;
@@ -64,7 +64,7 @@ public class WordCloudGenerator {
 		// 3. Check whether the maxWords command-line argument is a positive integer; if not, display "Error: maxWords must be a positive integer" and quit.
 		int maxWords = 0;
 		try{
-			Integer.parseInt(args[3]);
+			maxWords = Integer.parseInt(args[3]);
 		}
 		catch (NumberFormatException NFex){
 			System.out.println("Error: maxWords must be a positive integer");
@@ -194,10 +194,11 @@ public class WordCloudGenerator {
         // get top maxWords words from queue
         DictionaryADT<KeyWord> outputDict = new BSTDictionary<KeyWord>();
         int i = 0;
-        while (i <= maxWords){
+        while (i < maxWords){
         	i++;
         	try {
-				outputDict.insert( cloudQueue.removeMax() );
+        		KeyWord temp = cloudQueue.removeMax();
+				outputDict.insert( temp );
 			}
         	catch (DuplicateException e) {
 				if (debug) { e.printStackTrace(); }

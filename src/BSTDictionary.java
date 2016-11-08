@@ -148,7 +148,7 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
 	 * @param key - key to find
 	 */
     public K lookup(K key) {
-    	return lookupNode(root, key);
+    	return lookup(root, key);
     }
     
     /**helper function to search for a key in the BST and return it
@@ -158,22 +158,22 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
      * @param key - key to find
      * @return The key if found, otherwise null
      */
-    private K lookupNode(BSTnode<K> node, K key) {
+    private K lookup(BSTnode<K> node, K key) {
 		if (node == null) {
 			return null;
 		}
 		
 		//This is the key we're looking for
 		if (node.getKey().equals(key)) {
-			return key;
+			return node.getKey();
 		}
 		
 		//if the key of the node is less than the passed in key, look in the left tree, else look in the right Tree 
 		if (key.compareTo(node.getKey()) < 0) {
-			return lookupNode(node.getLeft(), key);
+			return lookup(node.getLeft(), key);
 		}
 		else {
-			return lookupNode(node.getRight(), key);
+			return lookup(node.getRight(), key);
 		}
 	}
 
