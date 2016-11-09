@@ -177,7 +177,10 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
 		}
 	}
 
-	//return true iff the dictionary is empty
+	/**
+	 * Return true iff the dictionary is empty
+	 * @return True if dictionary is empty, else false
+	 */
     public boolean isEmpty() {
     	if (numItems == 0) {
     		return true;
@@ -185,13 +188,18 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
         return false;
     }
     
-    //return the number of keys in the dictionary
+    /**
+     * Return the number of keys in the dictionary
+     * @return number of keys in dictionary
+     */
     public int size() {
         return numItems;
     }
     
-    //return the total path length: the sum of the lengths of the paths to each (key,value) pair
-    //MUST use recursion
+    /**
+     * Return the total path length: the sum of the lengths of the paths to each (key,value) pair
+     * @return total path length of the BST
+     */
     public int totalPathLength() {
     	return totalPathLength(root, 1);
     }
@@ -212,11 +220,17 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
 		return ( D + totalPathLength( node.getLeft(), D + 1 ) + totalPathLength( node.getRight(), D + 1 ) );
 	}
 
-	//return new iterator over the dictionary that iterates over the keys using in-order traversal
+	/**
+	 * return new iterator over the dictionary that iterates over the keys using in-order traversal
+	 * @return Iterator on the BST dictionary
+	 */
     public Iterator<K> iterator() {
     	return new BSTDictionaryIterator<K>(root);
     }
     
+    /**
+     * Displays a BSTDictionary as a string for debugging/review
+     */
     public String toString() {
     	String retString = "";
         BSTDictionaryIterator<KeyWord> myIter = (BSTDictionaryIterator<KeyWord>) this.iterator();

@@ -25,19 +25,6 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
 	private Stack<BSTnode<K>> dictStack;
 	private BSTnode<K> curr;
 	
-    // TO DO:
-    //
-    // Add your code to implement the BSTDictionaryIterator.  To receive full
-    // credit:
-    // - You must not use recursion in any of methods or constructor.
-    // - The constructor must have a worst-case complexity of O(height of BST).
-    // 
-    // Hint: use a Stack and push/pop nodes as you iterate through the BST.
-    // The constructor should push all the nodes needed so the *first* call 
-    // to next() returns the value in the node with the smallest key.
-    // (You can use the Java API Stack or implement your own Stack - if you
-    // implement your own, make sure to hand it in.)
-	
 	//constructor
 	/**
 	 * Create a new BSTDictionary iterator starting at the given root node
@@ -75,6 +62,7 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
     /**
 	 * Returns the data value for the next node in the tree/stack.
 	 * @return the data held in the next node.
+	 * @throws NoSuchElementException if dictionary is empty
 	 */
     public K next() {
     	// exception if already empty
@@ -90,6 +78,9 @@ public class BSTDictionaryIterator<K> implements Iterator<K> {
     	return retKey;
     }
 
+    /**
+     * Not implemented
+     */
     public void remove() {
         // DO NOT CHANGE: you do not need to implement this method
         throw new UnsupportedOperationException();
