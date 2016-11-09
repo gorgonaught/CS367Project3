@@ -192,6 +192,7 @@ public class WordCloudGenerator {
         while (dictIter.hasNext()){
         	cloudQueue.insert(dictIter.next());
         }
+        if ( debug ) { System.out.println( cloudQueue.toString() ); }
         
         // get top maxWords words from queue
         DictionaryADT<KeyWord> outputDict = new BSTDictionary<KeyWord>();

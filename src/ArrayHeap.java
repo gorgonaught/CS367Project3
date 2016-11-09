@@ -191,4 +191,15 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     public int size() {
         return this.n;
     }
+    
+    public String toString() {
+    	String retStr = "";
+    	int i = 1;
+    	while ( arrayHeap[i] != null ) {
+    		if ( i != 1 ) { retStr += ", "; }
+    		retStr += arrayHeap[i].toString();
+    		i++;
+    	}
+    	return retStr;
+    }
 }
