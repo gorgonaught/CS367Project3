@@ -51,7 +51,8 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     public void insert(E item) {
     	//should ignore position 0 and start adding at pos[1]
     	n += 1;
-    	if ( n > arrayHeap.length + 1 ) { 
+    	int ahLen = arrayHeap.length;
+    	if ( n >= arrayHeap.length ) { 
     		this.resize(); 
     	}
     	
@@ -76,7 +77,7 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     //resizes the array if it gets too big
     private void resize() {
     	E[] newHeap = (E[])(new Prioritizable[ arrayHeap.length * 2 ]);
-    	for (int i = 1; i <= n; i++ ){
+    	for (int i = 1; i <= n - 1; i++ ){
     		newHeap[i] = arrayHeap[i]; // O(N) = bad
     	}
     	arrayHeap = newHeap;
@@ -164,6 +165,7 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 		return rPos;
 	}
     
+	/*
     // get left child of current node
     private int leftchild ( int pos ) {
     	if ( 2 * pos > this.n ) {
@@ -178,12 +180,13 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     	}
     	return ( 2 * pos + 1 );
     }
+    */
     // get parent of current node
     private int parent( int pos ) {
     	if ( pos < 0 ) { return 0;}
     	return pos/2; // integer division always rounds down
     }
-    
+ 
     //returns number of items in PQ
     public int size() {
         return this.n;

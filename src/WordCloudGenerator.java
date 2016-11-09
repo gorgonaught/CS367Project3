@@ -33,7 +33,7 @@ public class WordCloudGenerator {
      * </ul>
      */
     public static void main(String[] args) {
-    	boolean debug = false;
+    	boolean debug = true;
 
         // Check the command-line arguments and set up the input and output
         // 1. Check whether there are exactly four command-line arguments;
@@ -131,7 +131,7 @@ public class WordCloudGenerator {
 						existingKey.increment();
 						if ( debug ) { 
 							System.out.println("Incremented dictionary word: " + word + ": " + Integer.toString(existingKey.getOccurrences()) );
-							System.out.println(dictionary.toString());
+							// System.out.println(dictionary.toString());
 							}
 					}
 					else {
@@ -139,7 +139,7 @@ public class WordCloudGenerator {
 								dictionary.insert(newKey);
 								if (debug) {
 									System.out.println("Added word to dictionary: " + word);
-									System.out.println(dictionary.toString());
+									// System.out.println(dictionary.toString());
 								}
 							}
 						// shouldn't be a dup since we just did lookup, but...
@@ -174,6 +174,7 @@ public class WordCloudGenerator {
 		and linear is the average path length if the underlying data structure is linear (like a chain of linked nodes), i.e., (1 + # keys)/2 
 		*/
 		float keys = dictionary.size();
+		if ( keys == 0 ) { System.out.println("All words ignored. No output created."); return; }
 		float totalPathLength = dictionary.totalPathLength();
 		
 		System.out.println("# keys: " + Float.toString((int)keys));
@@ -204,6 +205,9 @@ public class WordCloudGenerator {
         	catch (DuplicateException e) {
 				if (debug) { e.printStackTrace(); }
 			}
+        	catch (NoSuchElementException NSEex) {
+        		if (debug) { NSEex.printStackTrace(); }
+        	}
         }
         
         // create output html file based on top words

@@ -193,7 +193,7 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
     //return the total path length: the sum of the lengths of the paths to each (key,value) pair
     //MUST use recursion
     public int totalPathLength() {
-    	return countTotalPathLength(root);
+    	return totalPathLength(root, 1);
     }
     
     /**returns the total path length for the given BST node
@@ -201,34 +201,15 @@ public class BSTDictionary<K extends Comparable<K>> implements DictionaryADT<K> 
      * @param node - key at which to start counting
      * @return - total path length for node and all of node's children
      */
-    private int countTotalPathLength(BSTnode<K> node) {
-    	//base cases of no nodes or only the root
-    	if (node == null) {
-			return 0;
-		}
-		if ((node.getLeft() == null) && (node.getRight() == null)) {
-			return 1;
-		}
+    private int totalPathLength(BSTnode<K> node, int D) {
+    	// base case of no nodes or only the root
+    	if (node == null) { return 0; }
+    	
+    	// for a leaf, we add in the leaf's depth
+    	if ( node.getLeft() == null && node.getRight() == null ) { return D; }
 		
-		//check for children
-    	//return the greater of the recursive call for each child
-		int leftCount = 0;
-		int rightCount = 0;
-		if (node.getLeft() != null) {
-			leftCount = 1 + countTotalPathLength(node.getLeft());
-		}
-		if (node.getRight() != null) {
-			rightCount = 1 + countTotalPathLength(node.getRight());
-		}
-		
-		//if the left count is greater, return that
-		//otherwise if the right count is greater or they are the same, return the right count
-		if (leftCount > rightCount) {
-			return leftCount;
-		}
-		else {
-			return rightCount;
-		}
+    	// for a node with children, we add 
+		return ( D + totalPathLength( node.getLeft(), D + 1 ) + totalPathLength( node.getRight(), D + 1 ) );
 	}
 
 	//return new iterator over the dictionary that iterates over the keys using in-order traversal
