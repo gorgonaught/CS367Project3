@@ -51,7 +51,6 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     public void insert(E item) {
     	//should ignore position 0 and start adding at pos[1]
     	n += 1;
-    	int ahLen = arrayHeap.length;
     	if ( n >= arrayHeap.length ) { 
     		this.resize(); 
     	}

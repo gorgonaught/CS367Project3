@@ -119,7 +119,7 @@ public class WordCloudGenerator {
 					KeyWord newKey = new KeyWord( word );
 					
 					// make sure this keyword isn't in the ignore list
-					if (ignoreDict.lookup(word.toLowerCase()) != null) {  //(!ignoreDict.lookup(word.toLC()).equals(null))
+					if (ignoreDict.lookup(word) != null) {
 						if (debug) {
 							System.out.println("Ignored word: " + word);
 						}
@@ -152,10 +152,8 @@ public class WordCloudGenerator {
 				}
 			}
 		}
-		catch (FileNotFoundException FNFex)
-		{
-			if (debug)
-			{
+		catch (FileNotFoundException FNFex) {
+			if (debug) {
 				FNFex.printStackTrace();
 			}
 			System.out.println("problem with ignore file");
@@ -217,7 +215,8 @@ public class WordCloudGenerator {
         try {
 			out = new PrintStream(outFile);
 			generateHtml(outputDict, out);
-		} catch (FileNotFoundException e) {
+		} 
+        catch (FileNotFoundException e) {
 			if (debug) { e.printStackTrace(); }
 		}
         out.close();
