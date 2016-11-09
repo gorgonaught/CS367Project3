@@ -33,7 +33,7 @@ public class WordCloudGenerator {
      * </ul>
      */
     public static void main(String[] args) {
-    	boolean debug = true;
+    	boolean debug = false;
 
         // Check the command-line arguments and set up the input and output
         // 1. Check whether there are exactly four command-line arguments;

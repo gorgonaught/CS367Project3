@@ -56,13 +56,16 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     	}
     	
     	arrayHeap[n] = item;
+    	// System.out.println("Adding (" + n + ") : " + item.toString());
+    	// System.out.println( this.toString());
     	int currPos = n;
     	while ( !IsOrdered( parent(currPos )) ) {
     		// save current value
     		E currVal = arrayHeap[currPos];
     		int currPrior = arrayHeap[currPos].getPriority();
     		int parentPrior = arrayHeap[parent( currPos )].getPriority();
-    		if ( currPrior > parentPrior  ) {
+    		if ( currPrior >= parentPrior  ) {
+    			// System.out.println("Swapping: " + "(" + currPos + ")" + currVal.toString() + " to " + "(" + parent(currPos) + ")" + arrayHeap[parent(currPos)].toString() );
     			arrayHeap[currPos] = arrayHeap[parent( currPos )];
     			arrayHeap[parent( currPos )] = currVal;
     			currPos = parent( currPos );
@@ -70,7 +73,9 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     		if ( currPrior == parentPrior ) { 
     			currPos = parent( currPos );
     		}
+    		// System.out.println(this.toString());
     	}
+    	// System.out.println( this.toString());
     }
     
     //resizes the array if it gets too big
@@ -98,7 +103,8 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 	public E removeMax() {
 		if ( n < 1 ) { throw new NoSuchElementException(); }
 		// save value to return
-		E returnVal = arrayHeap[1]; 
+		E returnVal = this.getMax();
+		// System.out.println( "Removing: (1)" + returnVal.toString());
 		
 		// remove old max and re-order the array
 		// replace value removed with value from end and remove value from end
@@ -109,13 +115,13 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 			int lcPos = 2 * currPos;
 			int rcPos = 2 * currPos + 1;
 			// no children is already ordered
-			
 			// left child only
 			if ( rcPos > n ) {
-				if ( arrayHeap[rcPos].getPriority() > arrayHeap[currPos].getPriority() ) {
-					arrayHeap[currPos] = arrayHeap[rcPos];
-					arrayHeap[rcPos] = currVal;
-					currPos = rcPos;
+				if ( arrayHeap[lcPos].getPriority() > arrayHeap[currPos].getPriority() ) {
+					// System.out.println("Moving: (" + currPos + ")" + " to (" + lcPos + ")" + arrayHeap[lcPos].toString());
+					arrayHeap[currPos] = arrayHeap[lcPos];
+					arrayHeap[lcPos] = currVal;
+					currPos = lcPos;
 					continue;
 				}
 			}
@@ -123,8 +129,10 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 				int biggerPos = PrioritizedPosition( lcPos, rcPos );
 				if ( biggerPos == 0) { continue; }
 				if ( arrayHeap[biggerPos].getPriority() > arrayHeap[currPos].getPriority() ) {
+					// System.out.println("Moving: (" + biggerPos + ")" + arrayHeap[biggerPos].toString() + " to (" + currPos + ")" + arrayHeap[currPos].toString());
 					arrayHeap[currPos] = arrayHeap[biggerPos];
 					arrayHeap[biggerPos] = currVal;
+					currPos = biggerPos;
 				}
 			}
 		}
@@ -148,7 +156,7 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 		if ( lcPos > n ) { return true; }
 		
 		// left child only
-		if ( rcPos > n ) { return arrayHeap[pos].getPriority() > arrayHeap[lcPos].getPriority(); }
+		if ( rcPos > n ) { return arrayHeap[pos].getPriority() >= arrayHeap[lcPos].getPriority(); }
 		
 		// both children
 		int posPrior = arrayHeap[pos].getPriority();
