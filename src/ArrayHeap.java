@@ -21,33 +21,43 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     private int n = 0; // number of entries in heap
     private E[] arrayHeap = null; // default empty array
 
-    // Add your code to implement the PriorityQueue ADT operations using a heap whose underlying data structure is an array.
-
-    //create a new array heap using the default size
+    /**
+     * Creates a new array heap using the default size
+     * 
+     */
     public ArrayHeap() {
     	//create a heap where array has size of INIT_SIZE + 1 to account for unused pos[0]
-    	
 		arrayHeap = (E[]) new Prioritizable[INIT_SIZE + 1];
     	n = 0;
     }
     
-    //create a new array heap of the given size
-    //throws IllegalArgumentException if the size is less than 0
+    /**
+     * Creates a new ArrayHeap of the given size
+     * @param initSize - size of array  heap
+     * @throws IllegalArgumentException if the size is less than 0
+     */
     public ArrayHeap(int initSize) {
     	if (initSize < 0){
     		throw new IllegalArgumentException();
     	}
     	
     	arrayHeap = (E[])(new Prioritizable[initSize]);
-    	n = initSize;
+    	n = 0;
     }
 
-    //returns true if the PQ contains no items
+    /**
+     * Determines if the ArrayHeap is empty
+     * @return true if the array has no elements
+     */
     public boolean isEmpty() {
         return (n == 0);
     }
 
-    //adds given item to the PQ
+    /**
+     * Adds given item to the ArrayHeap
+     * 
+     * @param item - element to add to the heap
+     */
     public void insert(E item) {
     	//should ignore position 0 and start adding at pos[1]
     	n += 1;
@@ -78,7 +88,9 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     	// System.out.println( this.toString());
     }
     
-    //resizes the array if it gets too big
+    /**resizes the array if it gets too big
+     * Creates a new ArrayHeap of twice the original size
+     */
     private void resize() {
     	E[] newHeap = (E[])(new Prioritizable[ arrayHeap.length * 2 ]);
     	for (int i = 1; i <= n - 1; i++ ){
@@ -87,7 +99,11 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     	arrayHeap = newHeap;
 	}
     
-	//returns the item with the highest priority
+	/**returns the item with the highest priority
+	 * 
+	 * @return element in the ArrayHeap with the highest priority
+	 * @throws NoSuchElementException if the array has no items
+	 */
     public E getMax() {
 		if ( n < 1 ) { throw new NoSuchElementException(); }
         return arrayHeap[1];
@@ -165,6 +181,14 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
 		return ( posPrior >= lcPrior && posPrior >= rcPrior );
 	}
 	
+	/**
+	 * Returns the array position with a greater priority
+	 * Used to see which child is greater
+	 * 
+	 * @param lPos - left child node to compare
+	 * @param rPos - right child node to compare
+	 * @return node with the higher priority
+	 */
 	private int PrioritizedPosition ( int lPos, int rPos ) {
 		if ( lPos > n ) { return 0; }
 		if ( rPos > n ) { return lPos; }
@@ -188,17 +212,27 @@ public class ArrayHeap<E extends Prioritizable> implements PriorityQueueADT<E> {
     	return ( 2 * pos + 1 );
     }
     */
-    // get parent of current node
+	
+    /** get parent of current node
+     * 
+     * @param pos - node to find the parent
+     * @return parent position of the given node
+     */
     private int parent( int pos ) {
     	if ( pos < 0 ) { return 0;}
     	return pos/2; // integer division always rounds down
     }
  
-    //returns number of items in PQ
+    /**returns number of items in PQ
+     * 
+     */
     public int size() {
         return this.n;
     }
     
+    /**
+     * Displays an ArrayHeap as a string for debugging/review
+     */
     public String toString() {
     	String retStr = "";
     	int i = 1;
